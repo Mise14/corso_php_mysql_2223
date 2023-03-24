@@ -9,7 +9,7 @@
 <body>
 
     <?php
-        $nome = "Mario";
+        $nome = "Marioo";
         $eta = 50;
         $passatempi = array("Tennis","Cinema","no sport");
 

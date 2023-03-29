@@ -3,7 +3,7 @@
 
 <footer class="footer-bottom footer mt-auto py-3 bg-light">
   <div class="container">
-    <span class="text-muted">Roberto Sarasso</span>
+    <span class="text-muted">Fabio Miseo</span>
   </div>
 </footer>
 

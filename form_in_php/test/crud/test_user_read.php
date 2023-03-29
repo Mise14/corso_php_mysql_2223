@@ -54,7 +54,7 @@ if(is_array($result) && count($result) === 1 ){
 // }
 
 
-var_dump($result);
+//var_dump($result);
 
 $user2 = new User();
 $user2->first_name = "Filippo";
@@ -81,5 +81,7 @@ $result = $crud->read(); //7 array | vuoto
 if(is_array($result) && count($result) === 1 ){
     echo "\nricerca di tutti gli utenti (1)\n";
 };
+
+var_dump($result);
 
 

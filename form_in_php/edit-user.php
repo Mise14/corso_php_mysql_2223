@@ -11,45 +11,52 @@ use validator\ValidatorRunner;
 
 require "../config.php";
 require "./autoload.php";
-error_reporting(0);
+
 $user_id = filter_input(INPUT_GET,'user_id',FILTER_VALIDATE_INT);
 $crud = new UserCRUD();
 $user = $crud->read($user_id);
+
 // var_dump($user_id);
 // print_r($user);
-print_r($_GET);
-print_r($_POST);
+
+
+
 // echo $user->birth_city;
 
 $validatorRunner = new ValidatorRunner([
     'first_name' => new ValidateRequired($user->first_name,'Il Nome è obblicatorio'),
     'last_name'  => new ValidateRequired($user->last_name,'Il Cognome è obblicatorio'),
-    'birthday'  => new ValidateDate($user->birthday,'La data di nascità non è valida'), // Controllare
+    'birthday'  => new ValidateDate($user->birthday,'La data di nascità non è valida'),  
     'gender'  => new ValidateRequired($user->gender,'Il Genere è obbligatorio'),
     'birth_city'  => new ValidateRequired($user->birth_city,'La città  è obbligatoria'),
     'regione_id'  => new ValidateRequired($user->regione_id,'La regione è obbligatoria'),
     'provincia_id'  => new ValidateRequired($user->provincia_id,'La provincia è obbligatoria'),
-    'username'  => new ValidateRequired($user->username,'Username è obbligaztorio'),
+    'username'  => new ValidateRequired($user->username,'Username è obbligaztorio')
     // 'username:email'  => new ValidateMail('','Formato email non valido'),
-    'password'  => new ValidateRequired('','Password è obbligatorio')
-    # TODO: in update user la password se non è compilata rimane la stessa, se è compilata viene  cambiata 
+    
+     
 ]);
+
 extract($validatorRunner->getValidatorList());
 # --------------------------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "SONO NEL POST di EDIT";
-
+    //echo "SONO NEL POST di EDIT";
+    
+    
     $user_id = $_POST['user_id'];
-    echo "USER ID: " . $user_id;
+   // echo "USER ID: " . $user_id;
+
     // aggiunge l'indice "user_id" all'array $_POST
     $_POST['user_id'] = $user_id;
 
     $validatorRunner->isValid();
     if($validatorRunner->getValid()){
-       $user = User::arrayToUser($_POST);
+    
+      
+     $user = User::arrayToUser($_POST);
+     
        $crud = new UserCRUD();
-       $crud->update($user,$user_id);
-       // Redirect
+       $crud->update($user_id,$user);
     
        header("location: index-user.php");
     }
@@ -61,12 +68,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <section class="row">
             <div class="col-sm-8">
-                <form class="mt-1 mt-md-5" action="edit-user.php" method="post">
+                <form class="mt-1 mt-md-5" action="edit-user.php" method="post" >
+                    <input type="hidden" id="user_id" name="user_id" value="<?= $user_id?>">
+
                     <div class="mb-3">
-                    <input type="text" id="user_id" name="user_id" value="<?= $user_id?>">
                         <label for="first_name" class="form-label">nome</label>
-                        <input type="text" value="<?= $first_name->getValue() ?>"
-                            class="form-control <?php echo !$first_name->getValid() ? 'is-invalid':''  ?>" name="first_name" id="first_name">
+                        <input type="text" 
+                            value="<?= $first_name->getValue() ?>"
+                            class="form-control <?php echo !$first_name->getValid() ? 'is-invalid':''  ?>" 
+                            name="first_name" 
+                            id="first_name"
+                        >
                       
                         <?php if (!$first_name->getValid()) : ?>
                             <div class="invalid-feedback">
@@ -168,8 +180,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endif; ?>
                         
                     </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nome Utente / EMAIL</label>
+                        <input type="text" autocomplete="no"  value="<?php echo $username->getValue() ?>" class="form-control 
+                            <?php echo (!$username->getValid() && !$username->getValid()) ? 'is-invalid':'' ?>" name="username" id="username">
+                        <?php
+                        //if (!$username_email->getValid()) : ?>
+                            <div class="invalid-feedback">
+                            <?php //echo $username_email->getMessage() ?>
+                            </div>
+                        <?php // endif ?>
 
-
+                        <?php
+                        if (!$username->getValid()) : ?>
+                            <div class="invalid-feedback">
+                            <?php echo $username->getMessage() ?>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                     
                     <button class="btn btn-primary btn-sm" type="submit">Aggiorna</button>
                 </form>
             </div>

@@ -99,6 +99,7 @@ class UserCRUD {
         $stm = $conn->prepare($query);
         $stm->bindValue(':user_id',$user_id,PDO::PARAM_INT);
         $stm->execute();
+        //Restituisce righe coinvolte nell'operazione (righe eliminate es)
         return $stm->rowCount();
     }
 }

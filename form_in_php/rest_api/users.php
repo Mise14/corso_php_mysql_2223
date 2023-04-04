@@ -86,7 +86,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $rows = $crud->read($user_id);
 
         if ($rows==true) {
-            $update = $crud->update($user_id, $user);
+            $crud->update($user_id, $user);
             $user = (array) $user;
             unset($user['password']);
             unset($user['username']);

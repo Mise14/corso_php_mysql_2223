@@ -255,3 +255,22 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+DROP TABLE IF EXISTS `tasks`;
+
+CREATE TABLE `tasks` (
+  `task_id` int(10),
+  `user_id` int(20),
+  `name` varchar(255),
+  `due_date` date,
+  `done` TINYINT
+);
+
+ALTER TABLE `tasks`
+  ADD PRIMARY KEY (`task_id`);
+
+  ALTER TABLE `tasks`
+  MODIFY `task_id` int(10) NOT NULL AUTO_INCREMENT;
+
+  ALTER TABLE `tasks`
+  ADD FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`);

@@ -31,8 +31,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         'errors' => [
                             [
                                 'status' => 404,
-                                'title' => "Utente non trovato",
-                                'details' => "Utente id: " . $task_id
+                                'title' => "Task non trovata",
+                                'details' => "Task id: " . $task_id
                             ]
                         ]
                     ];
@@ -81,8 +81,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                             'errors' => [
                                 [
                                     'status' => 404,
-                                    'title' => "Utente non trovato",
-                                    'details' => "Utente id: " . $task_id
+                                    'title' => "Task non trovata",
+                                    'details' => "Task id: " . $task_id
                                 ]
                             ]
                         ];

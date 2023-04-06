@@ -274,3 +274,6 @@ ALTER TABLE `tasks`
 
   ALTER TABLE `tasks`
   ADD FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`);
+
+
+UPDATE `tasks` u SET  `user_id`= 54, `done`= true WHERE task_id = 14;

@@ -10,8 +10,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         #prendo un parametro dal get
         $task_id = filter_input(INPUT_GET, 'task_id');
-        if (!is_null($task_id)) {
-            echo json_encode($crud->read($task_id));
+        $user_id = filter_input(INPUT_GET, 'user_id');
+
+        if (!is_null($user_id)) {
+            $tasks = $crud->read($user_id);
+            echo json_encode($tasks);
+        } elseif(!is_null($task_id)){
+           $tasks = $crud->read($task_id);
+            echo json_encode($tasks);
         } else {
             $tasks = $crud->read();
             echo json_encode($tasks);
@@ -51,19 +57,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $task['task_id'] = $last_id;
                 $response = [
                     'data' => $task,
-                    'status' => 202
+                    'status' => 201
                 ];
         
                 echo json_encode($response);
                 break;
-
+                
                 case 'PUT':
                     $input =  file_get_contents('php://input');
                     $request = json_decode($input, true);
                     $task = Task::arrayToTask($request);
                     $task_id = filter_input(INPUT_GET, 'task_id');
-            
-                    $rows = $crud->read($task_id);
+                    $rows = $crud->readTask($task_id);
             
                     if ($rows==true) {
                         $crud->update($task_id, $task);
@@ -89,7 +94,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         echo json_encode($response);
                     }
             
-                    break;
+                    break;    
             
                 default:
                     # code...

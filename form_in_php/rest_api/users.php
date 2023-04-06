@@ -52,17 +52,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $user = User::arrayToUser($request);
 
+        try{
         $last_id = $crud->create($user);
 
-        // $response = [
-        //     'data' =>[
-        //         'type' => "user",
-        //         'id' => $last_id,
-        //         'attributes' => [
-        //             $user
-        //         ],
-        //     ]
-        // ];
         $user = (array) $user;
         //unset annulla gli indici degli array, quindi in qst caso non visualizzo la password
         unset($user['password']);
@@ -72,9 +64,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
             'status' => 202
         ];
 
-        echo json_encode($response);
+        //echo json_encode($response,JSON_PRETTY_PRINT);
 
-
+        }catch (\Throwable $th){
+            http_response_code(422);
+            $response = [
+                'errors' => [
+                    [
+                        'status' => 422,
+                        'title' => "Formato non trovato",
+                        'details' => $th->getMessage(),
+                        'code' => $th->getCode()
+                    ]
+                ]
+            ];
+        }
+        echo json_encode($response, JSON_PRETTY_PRINT);
         break;
 
     case 'PUT':

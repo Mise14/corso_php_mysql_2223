@@ -37,13 +37,13 @@ class TaskCRUD {
         return $stm->rowCount();
     }
 
-    public function read(int $task_id=null):Task|array|bool
+    public function read(int $user_id=null):Task|array|bool|String
     {
         $conn = new \PDO(DB_DSN,DB_USER,DB_PASSWORD);
-        if(!is_null($task_id)){
-            $query = "SELECT * FROM tasks where task_id = :task_id";
+        if(!is_null($user_id)){
+            $query = "SELECT * FROM tasks where user_id = :user_id";
             $stm = $conn->prepare($query);
-            $stm->bindValue(':task_id',$task_id,PDO::PARAM_INT);
+            $stm->bindValue(':user_id',$user_id,PDO::PARAM_INT);
             
             $stm->execute();
             $result = $stm->fetchAll(PDO::FETCH_CLASS,Task::class);
@@ -51,11 +51,11 @@ class TaskCRUD {
             if(count($result)== 1){
                 return $result[0];
             }
-            if(count($result)>1){
-                throw new \Exception("Chiave primaria duplicata", 1);
-            }
+            // if(count($result)>1){
+            //     throw new \Exception("Chiave primaria duplicata", 1);
+            // }
             if(count($result) === 0){
-                return false;
+                return "Utente inesistente";
             }
         }else{
             $query = "SELECT * FROM tasks";
@@ -69,6 +69,29 @@ class TaskCRUD {
             }
             return $result;
         }
+        return $result;
+    }
+
+    public function readTask(int $task_id=null):Task|array|bool|String
+    {
+        $conn = new \PDO(DB_DSN,DB_USER,DB_PASSWORD);
+        if(!is_null($task_id)){
+            $query = "SELECT * FROM tasks where task_id = :task_id";
+            $stm = $conn->prepare($query);
+            $stm->bindValue(':task_id',$task_id,PDO::PARAM_INT);
+            
+            $stm->execute();
+            $result = $stm->fetchAll(PDO::FETCH_CLASS,Task::class);
+
+            if(count($result)== 1){
+                return $result[0];
+            }
+            if(count($result) === 0){
+                return false;
+            }
+        }
+        return $result;
+        
     }
 
     public function delete($task_id)

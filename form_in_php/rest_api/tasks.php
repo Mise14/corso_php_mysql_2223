@@ -40,19 +40,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $task_id = filter_input(INPUT_GET, 'task_id');
             if (!is_null($task_id)) {
                 $rows = $crud->delete($task_id);
-                $response = [
-                    'data' => $task_id,
-                    'status' => 200
-                ];
-                echo json_encode($response);
                 if ($rows == 1) {
-                    http_response_code(204);
                     $response = [
                         'data' => $task_id,
                         'status' => 200
                     ];
                     echo json_encode($response);
                 }
+
                 if ($rows == 0) {
                     http_response_code(404);
                     $response = [
@@ -64,8 +59,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
                             ]
                         ]
                     ];
+                    echo json_encode($response);
                 }
-                echo json_encode($response);
+
+                  
+                 
             }
             break;
 
@@ -86,37 +84,42 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
                 
                 case 'PUT':
-                    $input =  file_get_contents('php://input');
-                    $request = json_decode($input, true);
+                    $input = file_get_contents('php://input');
+                    $request = json_decode($input, true); // ottengo un array associativo
                     $task = Task::arrayToTask($request);
                     $task_id = filter_input(INPUT_GET, 'task_id');
-                    $rows = $crud->readTask($task_id);
+                    if (!is_null($task_id)) {
             
-                    if ($rows==true) {
-                        $crud->update($task_id, $task);
-                        $task = (array) $task;
-                        $response = [
-                            'data' => [
-                                'type' => "task",
-                                'attributes' => $task
-                            ]
-                        ];
-                        echo json_encode($response);
-                    }else {
-                        http_response_code(404);
-                        $response = [
-                            'errors' => [
-                                [
-                                    'status' => 404,
-                                    'title' => "Task non trovata",
-                                    'details' => "Task id: " . $task_id
+                        $row = $crud->update($task);
+            
+                        if ($row == 1 ) {
+            
+                            http_response_code(202);
+            
+                            $response = [
+                                "data" => $task,
+                                'status' => 202
+                            ];
+                            echo json_encode($response);
+                        } else if ($row == 0) {
+            
+                            http_response_code(404);
+            
+                            $response = [
+                                'errors' => [
+                                    [
+                                        'status' => 404,
+                                        'title' => "Task non trovata o già presente",
+                                        'details' => $task_id
+                                    ]
                                 ]
-                            ]
-                        ];
-                        echo json_encode($response);
-                    }
+                            ];
             
-                    break;    
+                            echo json_encode($response);
+                        }
+                    }
+                    break;
+            
             
                 default:
                     # code...

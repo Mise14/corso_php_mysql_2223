@@ -14,13 +14,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         if (!is_null($user_id)) {
             $tasks = $crud->read($user_id);
-            echo json_encode($tasks);
+            $response = [
+                'data' => $tasks,
+                'status' => 200
+            ];
+            echo json_encode($response);
         } elseif(!is_null($task_id)){
            $tasks = $crud->read($task_id);
-            echo json_encode($tasks);
+           $response = [
+            'data' => $tasks,
+            'status' => 200
+        ];
+        echo json_encode($response);
         } else {
             $tasks = $crud->read();
-            echo json_encode($tasks);
+            $response = [
+                'data' => $tasks,
+                'status' => 200
+            ];
+            echo json_encode($response);
         }
         break;
 
@@ -28,8 +40,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $task_id = filter_input(INPUT_GET, 'task_id');
             if (!is_null($task_id)) {
                 $rows = $crud->delete($task_id);
+                $response = [
+                    'data' => $task_id,
+                    'status' => 200
+                ];
+                echo json_encode($response);
                 if ($rows == 1) {
                     http_response_code(204);
+                    $response = [
+                        'data' => $task_id,
+                        'status' => 200
+                    ];
+                    echo json_encode($response);
                 }
                 if ($rows == 0) {
                     http_response_code(404);

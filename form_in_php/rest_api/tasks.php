@@ -8,30 +8,62 @@ include("../autoload.php");
 $crud = new TaskCRUD;
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        #prendo un parametro dal get
-        $task_id = filter_input(INPUT_GET, 'task_id');
-        $user_id = filter_input(INPUT_GET, 'user_id');
+        $task_id = filter_input(INPUT_GET,'task_id');
+        $user_id = filter_input(INPUT_GET,'user_id');
+        //task_id
+        if(!is_null($task_id)){
+            $tasks = $crud->read_by_task_id($task_id);
+            if($tasks == false){
+                    $response = [
+                        'errors' => [
+                            [
+                                'status' => 404,
+                                'title' => "Risorsa non trovata, task_id non esistente",
+                                'details' => $task_id
+                            ]
+                        ]    
+                    ];  
+                    echo json_encode($response);
+            }else{
+                http_response_code(200);
 
-        if (!is_null($user_id)) {
-            $tasks = $crud->read($user_id);
+                $response = [
+                    'data' => $tasks,
+                    'status' => 200
+                ];
+                echo json_encode($response);
+            }
+        //user_id
+        }elseif(!is_null($user_id)){
+            $tasks = $crud->read_by_user_id($user_id);
+            if($tasks == false){
+                $response = [
+                    'errors' => [
+                        [
+                            'status' => 404,
+                            'title' => "Risorsa non trovata, user_id non esistente",
+                            'details' => $user_id
+                        ]
+                    ]    
+                    ];
+                echo json_encode($response);
+            }else{
+                http_response_code(200);
+
+                $response = [
+                    'data' => $tasks,
+                    'status' => 200
+                ];
+                echo json_encode($response);
+            }
+        //all
+        }else{
+            $tasks = $crud->read_all();
+
             $response = [
                 'data' => $tasks,
-                'status' => 200
-            ];
-            echo json_encode($response);
-        } elseif(!is_null($task_id)){
-           $tasks = $crud->read($task_id);
-           $response = [
-            'data' => $tasks,
-            'status' => 200
-        ];
-        echo json_encode($response);
-        } else {
-            $tasks = $crud->read();
-            $response = [
-                'data' => $tasks,
-                'status' => 200
-            ];
+                'status'=>200
+            ]; 
             echo json_encode($response);
         }
         break;
@@ -84,41 +116,44 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
                 
                 case 'PUT':
-                    $input = file_get_contents('php://input');
-                    $request = json_decode($input, true); // ottengo un array associativo
-                    $task = Task::arrayToTask($request);
                     $task_id = filter_input(INPUT_GET, 'task_id');
-                    if (!is_null($task_id)) {
             
-                        $row = $crud->update($task);
+                    $input = file_get_contents('php://input');
+                    
+                    $request = json_decode($input, true);
             
-                        if ($row == 1 ) {
+                    $task = Task::arraytotask($request);
             
-                            http_response_code(202);
+                    $last_insert_id = $crud->update($task, $task_id);
             
+                    $task = (array)$task;
+            
+                    $task['task_id'] = $last_insert_id;
+                    
+                        if ($last_insert_id == 1) {
+                            http_response_code(200);
                             $response = [
-                                "data" => $task,
-                                'status' => 202
+                                'data' => $task,
+                                'status' => 201
                             ];
-                            echo json_encode($response);
-                        } else if ($row == 0) {
-            
+                        }
+                        if ($last_insert_id == 0) {
                             http_response_code(404);
-            
+                            // array associativo
                             $response = [
+                                // proprietà errors
+                                // 'chiave' => "valore"
                                 'errors' => [
                                     [
                                         'status' => 404,
-                                        'title' => "Task non trovata o già presente",
+                                        'title' => "Risorsa non trovata, task già modificata",
                                         'details' => $task_id
                                     ]
                                 ]
                             ];
-            
-                            echo json_encode($response);
                         }
-                    }
-                    break;
+                        //risposta va convertita in formato json
+                        echo json_encode($response);
             
             
                 default:

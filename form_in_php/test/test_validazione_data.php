@@ -1,4 +1,7 @@
 <?php
+
+use validator\ValidateDate;
+
 require "./form_in_php/class/validator/Validable.php";
 require "./form_in_php/class/validator/ValidateDate.php";
 

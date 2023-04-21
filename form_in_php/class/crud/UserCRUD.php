@@ -47,7 +47,7 @@ class UserCRUD {
     }
 
     
-    public function read(int $user_id=null):User|array|bool
+    public function read(int $user_id=null)
     {
         // null --> false
         // "" == false --> true

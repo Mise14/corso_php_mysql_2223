@@ -1,6 +1,9 @@
 <?php
 # php form_in_php/test/test_regioni.php
-require "./config.php";
+
+use Registry\it\Regione;
+
+require "./form_in_php/config.php";
 require "./form_in_php/class/Registry/it/Regione.php";
 
 // $regioni = new Regioni();

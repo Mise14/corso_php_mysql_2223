@@ -4,7 +4,7 @@ use crud\UserCRUD;
 use models\User;
 use PSpell\Config;
 
-include("../../config.php");
+include("./form_in_php/config.php");
 include("../autoload.php");
 
 $crud = new UserCRUD;

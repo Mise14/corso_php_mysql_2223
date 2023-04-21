@@ -9,7 +9,7 @@ use validator\ValidateMail;
 use validator\ValidateRequired;
 use validator\ValidatorRunner;
 
-require "../config.php";
+require "./config.php";
 require "./autoload.php";
 
 

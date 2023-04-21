@@ -4,7 +4,7 @@ function UsersList(array_users, element_selector) {
     //indico che la lista la voglio nell'index.html nell'id che indico quando richiamo la funzione
     const lista = document.getElementById(element_selector)
     //per ottenere l'elenco prendo il json -> entro dentro data -> li mappo (trasformo in qualcos altro)
-    const elenco = array_users.map((user) => {
+    const elenco = array_users.data.map((user) => {
         //console.log("sono un utente",user)
         return "<li>" + user.first_name + " " + user.last_name + "</li>"
         //prendo gli elementi dell'array e li unisco con una stringa usando .join

@@ -1,7 +1,7 @@
 <?php
 use crud\UserCRUD;
 
-require "../config.php";
+require "./config.php";
 require "./autoload.php";
 
 $users = (new UserCRUD())->read();

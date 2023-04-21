@@ -1,5 +1,5 @@
 <?php 
-include "../../config.php";
+include "./form_in_php/config.php";
 $query = file_get_contents("install.sql");
 try {
     $conn = new PDO(DB_DSN,DB_USER,DB_PASSWORD);

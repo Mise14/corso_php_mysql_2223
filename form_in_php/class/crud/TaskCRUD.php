@@ -21,7 +21,7 @@ class TaskCRUD {
         return $conn->lastInsertId();
     }
 
-//update -> PUT✅
+
 public function update($task, $task_id){
     $query = "UPDATE `tasks` SET  `user_id`= :user_id, `name`= 
     :name, `due_date` = :due_date, `done` = :done WHERE task_id= :task_id;";
@@ -38,8 +38,8 @@ public function update($task, $task_id){
     return $stm->rowCount();
 }
 
-    //read_by_task_id -> GET✅
-    public function read_by_task_id(int $task_id = null):Task|array|bool
+   
+    public function read_by_task_id(int $task_id = null)
     {
         $conn = new \PDO(DB_DSN, DB_USER, DB_PASSWORD);
         $query = "SELECT * FROM tasks WHERE task_id = :task_id";
@@ -53,8 +53,8 @@ public function update($task, $task_id){
 
     }
     
-    //read_by_user_id -> GET✅
-    public function read_by_user_id(int $user_id = null):Task|array|bool
+ 
+    public function read_by_user_id(int $user_id = null)
     {
         $conn = new \PDO(DB_DSN, DB_USER, DB_PASSWORD);
         $query = "SELECT * FROM tasks WHERE user_id = :user_id";
@@ -67,8 +67,8 @@ public function update($task, $task_id){
         return $result;
     }
 
-    //read_all -> GET✅
-    public function read_all():Task|array|bool
+    
+    public function read_all()
     {
         $conn = new \PDO(DB_DSN, DB_USER, DB_PASSWORD);
         $query = "SELECT * FROM tasks";
@@ -83,7 +83,7 @@ public function update($task, $task_id){
         return $result;
         }
 
-    public function read(int $user_id=null):Task|array|bool|String
+    public function read(int $user_id=null)
     {
         $conn = new \PDO(DB_DSN,DB_USER,DB_PASSWORD);
         if(!is_null($user_id)){
@@ -118,7 +118,7 @@ public function update($task, $task_id){
         return $result;
     }
 
-    public function readTask(int $task_id=null):Task|array|bool|String
+    public function readTask(int $task_id=null)
     {
         $conn = new \PDO(DB_DSN,DB_USER,DB_PASSWORD);
         if(!is_null($task_id)){
@@ -140,7 +140,7 @@ public function update($task, $task_id){
         
     }
 
-    public function read1(int $id_user = null): Task|array|bool
+    public function read1(int $id_user = null)
     {
         $conn = new \PDO(DB_DSN, DB_USER, DB_PASSWORD);
         if (!is_null($id_user)) {

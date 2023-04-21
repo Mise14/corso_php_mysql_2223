@@ -2,7 +2,7 @@
 use crud\TaskCRUD;
 use models\Task;
 
-include("../../config.php");
+include("./config.php");
 include("../autoload.php");
 
 $crud = new TaskCRUD;

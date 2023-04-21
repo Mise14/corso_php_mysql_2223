@@ -26,7 +26,21 @@ function App() {
   const [taskListData,setTaskListData] = useState ([])
 
   function aggiungiTask(){
-    alert("tutto ok");
+    setTaskListData((attuale)=>{
+      const new_attuale = [...attuale]
+      new_attuale.push(
+        {
+              task_id: 10,
+              user_id: 12,
+              name: "comprare il latte",
+              due_date:"2023-04-04",
+              done: true
+        }
+      );
+      return attuale;
+    })
+
+    //alert("tutto ok");
   }
 
   return (

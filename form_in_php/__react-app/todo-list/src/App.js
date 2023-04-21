@@ -25,10 +25,13 @@ function App() {
 
   const [taskListData,setTaskListData] = useState ([])
 
-  
+  function aggiungiTask(){
+    alert("tutto ok");
+  }
 
   return (
     <main>
+      <button onClick={aggiungiTask}>Add Task</button>
         <TaskList header={'Cose da fare oggi di Paolo'} tasks={taskListData}>
           {
           taskListData.map(task => <TaskItem key={task.task_id} done={task.done} nome_task ={task.name} />)
